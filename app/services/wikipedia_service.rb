@@ -6,9 +6,7 @@ class WikipediaService
   WORD_BLACKLIST = MOST_COMMON_WIKIPEDIA_WORDS + ["has", "also", "which", "s", "was", "are", "is", "if", "no", "like", "where", "being", "who", "them", "had", "however", "often", "while", "only", "many", "during", "between", "these", "when", "most", "such", "than", "some", "more", "been", "may", "cats", "were"]
 
 
-  def do_the_thing
-    article_title = 'Cat'
-
+  def get_page_data article_title
     page = Wikipedia.find( article_title )
 
     text = page.text
@@ -20,7 +18,7 @@ class WikipediaService
       text += " #{link_page.text} "
     end
 
-    generate_word_frequency_hash text
+    format_word_frequency_array generate_word_frequency_hash text
   end
 
   def generate_word_frequency_hash text
@@ -33,9 +31,13 @@ class WikipediaService
       frequency_hash[word.downcase] += 1
     end
 
-    pp Hash[frequency_hash.sort_by{|k, v| v}]
+    frequency_hash.sort_by{|k, v| -v}.first(100)
+  end
 
-    frequency_hash
+  def format_word_frequency_array frequency_array
+    frequency_array.map do |word|
+      { "text" => word[0], "weight" => word[1] }
+    end
   end
 
   def find_random_article
