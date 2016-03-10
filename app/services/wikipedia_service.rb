@@ -49,7 +49,6 @@ class WikipediaService
     loop do
       wikipedia_page_link = "#{wikipedia_link_base}#{plcontinue}"
       response = HTTParty.get(wikipedia_page_link)
-      # binding.pry
       continue_value = response["continue"].try(:[], "plcontinue")
       plcontinue = continue_value ? "&plcontinue=#{continue_value}" : nil
 
