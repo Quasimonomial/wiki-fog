@@ -13,4 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require jqcloud2/dist/jqcloud.min.js
 //= require_tree .
