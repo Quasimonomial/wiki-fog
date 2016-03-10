@@ -41,14 +41,23 @@ class WikipediaService
   end
 
   def self.fetch_links title
-    wikipedia_link = "https://en.wikipedia.org/w/api.php?action=query&prop=links&format=json&pllimit=500&titles=#{title}"
-    response = HTTParty.get(wikipedia_link)
-    link_pile = response["query"]['pages'].first[1]["links"]
+    wikipedia_link_base = "https://en.wikipedia.org/w/api.php?action=query&prop=links&format=json&pllimit=max&titles=#{title}"
 
+    plcontinue = ''
     link_names = []
 
-    link_pile.each do |link|
-      link_names << link["title"]
+    loop do
+      wikipedia_page_link = "#{wikipedia_link_base}#{plcontinue}"
+      response = HTTParty.get(wikipedia_page_link)
+      # binding.pry
+      continue_value = response["continue"].try(:[], "plcontinue")
+      plcontinue = continue_value ? "&plcontinue=#{continue_value}" : nil
+
+      response["query"]['pages'].first[1]["links"].each do |link|
+        link_names << link["title"]
+      end
+
+      break unless plcontinue
     end
 
     link_names

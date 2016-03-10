@@ -47,3 +47,4 @@ end
 
 gem 'wikipedia-client'
 gem 'httparty'
+gem 'pry-rails'
