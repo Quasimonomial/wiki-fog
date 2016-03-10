@@ -1,9 +1,7 @@
-console.log("what")
 
 window.onload = function(){
   $('.article-form').submit(function(event) {
     event.preventDefault();
-    console.log("button click")
 
     data = $(this).serialize();
     $.ajax({
@@ -11,11 +9,9 @@ window.onload = function(){
       url: "/wikipedia",
       data: data,
       success: function(response){
-        debugger
-        console.log("success")
+        $('.word-cloud').jQCloud(response);
       },
       dataType: "json"
     });
-
   });
 }
