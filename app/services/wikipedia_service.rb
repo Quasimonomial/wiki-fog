@@ -7,6 +7,7 @@ class WikipediaService
 
 
   def get_page_data article_title
+    return [] unless article_title
     page = Wikipedia.find( article_title )
 
     text = page.text

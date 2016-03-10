@@ -5,6 +5,7 @@ class WikipediaController < ApplicationController
 
   def create
     wiki_service = WikipediaService.new
-    render json: wiki_service.get_page_data params[:article_title] 
+    frequency_data = wiki_service.get_page_data params[:article_title]
+    render json: frequency_data.to_json  
   end
 end
