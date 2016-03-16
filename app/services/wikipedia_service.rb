@@ -8,10 +8,10 @@ class WikipediaService
 
   attr_accessor :article_title, :word_count
 
-  def initialize(article_title, word_count)
-    word_count = 50 if word_count.blank?
-    @article_title = article_title
-    @word_count = [word_count.to_i, 200].min
+  def initialize options
+    options["word_count"] = 50 if options["word_count"].blank?
+    @article_title = options["article_title"]
+    @word_count = [options["word_count"].to_i, 200].min
   end
 
   def get_page_data
