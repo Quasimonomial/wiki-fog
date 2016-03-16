@@ -6,6 +6,9 @@ window.onload = function(){
     event.preventDefault();
 
     data = $(this).serialize();
+
+    $('.article-form :input').prop("disabled", true)
+
     $.ajax({
       type: "POST",
       url: "/wikipedia",
@@ -19,6 +22,8 @@ window.onload = function(){
         } else {
           $('.word-cloud').jQCloud('update', response);
         }
+
+        $('.article-form :input').prop("disabled", false)
       },
       dataType: "json"
     });
