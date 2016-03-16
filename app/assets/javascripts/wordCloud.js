@@ -18,14 +18,11 @@ window.onload = function(){
 
   spinner = new Spinner(spinnerOpts)
 
-  $('.article-form').submit(function(event) {
-    event.preventDefault();
+  getFormData = function(){
+    return $('.article-form').serialize();
+  }
 
-    data = $(this).serialize();
-
-    $('.article-form :input').prop("disabled", true)
-    spinner.spin($('.word-cloud')[0])
-
+  var requestCloudData = function(data){
     $.ajax({
       type: "POST",
       url: "/wikipedia",
@@ -47,5 +44,17 @@ window.onload = function(){
 
       dataType: "json"
     });
+  }
+
+
+  $('.article-form').submit(function(event) {
+    event.preventDefault();
+
+    data = getFormData();
+
+    $('.article-form :input').prop("disabled", true);
+    spinner.spin($('.word-cloud')[0]);
+
+    requestCloudData(data);
   });
 }
