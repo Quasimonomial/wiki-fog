@@ -6,8 +6,15 @@ class WikipediaService
 
   WORD_BLACKLIST = MOST_COMMON_WIKIPEDIA_WORDS + ["has", "also", "which", "s", "was", "are", "is", "if", "no", "like", "where", "being", "who", "them", "had", "however", "often", "while", "only", "many", "during", "between", "these", "when", "most", "such", "than", "some", "more", "been", "may", "cats", "were"]
 
+  attr_accessor :article_title, :word_count
 
-  def get_page_data article_title
+  def initialize(article_title, word_count)
+    word_count = 50 if word_count.blank?
+    @article_title = article_title
+    @word_count = [word_count.to_i, 200].min
+  end
+
+  def get_page_data
     return [] unless article_title
     page = Wikipedia.find( article_title )
 
@@ -15,7 +22,7 @@ class WikipediaService
     links = WikipediaService.fetch_links article_title
 
     links.each_slice(50) do |links|
-      puts "fetching #{links}"
+      # puts "fetching #{links}"
       api_link = URI.escape("http://en.wikipedia.org/w/api.php?action=query&format=json&rvprop=content&inprop=url&prop=extracts&explaintext=&titles=#{links.join('|')}")
       response = HTTParty.get(api_link)
       response["query"]["pages"].each do |id, article|
@@ -23,7 +30,7 @@ class WikipediaService
           article_text = article["extract"]
           text += article_text
         rescue
-          puts "problem fetching article #{id}"
+          # puts "problem fetching article #{id}"
         end
       end
 
@@ -42,7 +49,7 @@ class WikipediaService
       frequency_hash[word.downcase] += 1
     end
 
-    frequency_hash.sort_by{|k, v| -v}.first(100)
+    frequency_hash.sort_by{|k, v| -v}.first(word_count)
   end
 
   def format_word_frequency_array frequency_array
