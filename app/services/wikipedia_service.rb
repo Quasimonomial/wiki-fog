@@ -47,7 +47,9 @@ class WikipediaService
 
   def format_word_frequency_array frequency_array
     frequency_array.map do |word|
-      { "text" => word[0], "weight" => word[1] }
+      { "text" => word[0],
+        "weight" => word[1],
+        "link" => "https://en.wikipedia.org/wiki/#{word[0]}" }
     end
   end
 
