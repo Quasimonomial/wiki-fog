@@ -1,5 +1,7 @@
 
 window.onload = function(){
+  cloudInitialized = false;
+
   $('.article-form').submit(function(event) {
     event.preventDefault();
 
@@ -9,7 +11,14 @@ window.onload = function(){
       url: "/wikipedia",
       data: data,
       success: function(response){
-        $('.word-cloud').jQCloud(response);
+        if(!cloudInitialized){
+          $('.word-cloud').jQCloud(response,{
+            autoResize: true
+          });
+          cloudInitialized = true;
+        } else {
+          $('.word-cloud').jQCloud('update', response);
+        }
       },
       dataType: "json"
     });
