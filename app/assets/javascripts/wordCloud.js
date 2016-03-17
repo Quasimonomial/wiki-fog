@@ -24,6 +24,7 @@ window.onload = function(){
 
   var requestCloudData = function(data){
     $('.article-form :input').prop("disabled", true);
+    $('.word-cloud').html('');
     spinner.spin($('.word-cloud')[0]);
 
     $.ajax({
