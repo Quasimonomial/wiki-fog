@@ -1,8 +1,72 @@
+var Wikifog = {
+  cloudInitialized: false,
 
-window.onload = function(){
-  cloudInitialized = false;
+  addEventHandlers: function(response){
+    var size = _.size(response);
+    for(word in response){
+      response[word].handlers = {
+        click: function(){
+          Wikifog.requestCloudData({
+            "wikipedia": {
+              "article_title": response[word]["text"],
+              "word_count": size
+            }
+          });
+        }
+      }
+    }
+  },
 
-  spinnerOpts = {
+  displayCloud: function(response){
+    if(!Wikifog.cloudInitialized){
+      $('.word-cloud').jQCloud(response,{
+        autoResize: true
+      });
+      Wikifog.cloudInitialized = true;
+    } else {
+      $('.word-cloud').jQCloud('update', response);
+    }
+  },
+
+  displayError: function(){
+    $('.notices').html("<p>The requested article was not found.</p>")
+  },
+
+  enableForm: function(){
+    $('.article-form :input').prop("disabled", false)
+    Wikifog.spinner.stop()
+  },
+
+  getFormData: function(){
+    return $('.article-form').serialize();
+  },
+
+  requestCloudData: function(data){
+    $('.notices').html("")
+    $('.article-form :input').prop("disabled", true);
+    $('.word-cloud').html('');
+    this.spinner.spin($('.word-cloud')[0]);
+
+    $.ajax({
+      type: "POST",
+      url: "/wikipedia",
+      data: data,
+      success: Wikifog.requestSuccess,
+
+      error: Wikifog.displayError,
+
+      complete: Wikifog.enableForm,
+
+      dataType: "json"
+    });
+  },
+
+  requestSuccess: function(response){
+    Wikifog.addEventHandlers(response);
+    Wikifog.displayCloud(response);
+  },
+
+  spinner: new Spinner({
     lines: 13,
     length: 68,
     width: 22,
@@ -14,68 +78,16 @@ window.onload = function(){
     trail: 70,
     className: 'spinner',
     shadow: true
-  }
-
-  spinner = new Spinner(spinnerOpts)
-
-  getFormData = function(){
-    return $('.article-form').serialize();
-  }
-
-  var requestCloudData = function(data){
-    $('.notices').html("")
-    $('.article-form :input').prop("disabled", true);
-    $('.word-cloud').html('');
-    spinner.spin($('.word-cloud')[0]);
-
-    $.ajax({
-      type: "POST",
-      url: "/wikipedia",
-      data: data,
-      success: function(response){
-        var size = _.size(response);
-        for(word in response){
-          response[word].handlers = {
-            click: function(){
-              requestCloudData({
-                "wikipedia": {
-                  "article_title": response[word]["text"],
-                  "word_count": size
-                }
-              });
-            }
-          }
-        }
-
-        if(!cloudInitialized){
-          $('.word-cloud').jQCloud(response,{
-            autoResize: true
-          });
-          cloudInitialized = true;
-        } else {
-          $('.word-cloud').jQCloud('update', response);
-        }
-      },
-
-      error: function(){
-        $('.notices').html("<p>The requested article was not found.</p>")
-      },
-
-      complete: function(){
-        $('.article-form :input').prop("disabled", false)
-        spinner.stop()
-      },
-
-      dataType: "json"
-    });
-  }
+  })
+}
 
 
+window.onload = function(){
   $('.article-form').submit(function(event) {
     event.preventDefault();
 
-    data = getFormData();
+    data = Wikifog.getFormData();
 
-    requestCloudData(data);
+    Wikifog.requestCloudData(data);
   });
 }

@@ -39,6 +39,8 @@ class WikipediaService
     format_word_frequency_array generate_word_frequency_hash text
   end
 
+  private
+
   def generate_word_frequency_hash text
     frequency_hash = Hash.new(0)
 
