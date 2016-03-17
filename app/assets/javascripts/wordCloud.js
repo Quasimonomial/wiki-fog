@@ -23,6 +23,7 @@ window.onload = function(){
   }
 
   var requestCloudData = function(data){
+    $('.notices').html("")
     $('.article-form :input').prop("disabled", true);
     $('.word-cloud').html('');
     spinner.spin($('.word-cloud')[0]);
@@ -55,6 +56,11 @@ window.onload = function(){
           $('.word-cloud').jQCloud('update', response);
         }
       },
+
+      error: function(){
+        $('.notices').html("<p>The requested article was not found.</p>")
+      },
+
       complete: function(){
         $('.article-form :input').prop("disabled", false)
         spinner.stop()
