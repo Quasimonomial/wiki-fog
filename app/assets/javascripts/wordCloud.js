@@ -23,11 +23,28 @@ window.onload = function(){
   }
 
   var requestCloudData = function(data){
+    $('.article-form :input').prop("disabled", true);
+    spinner.spin($('.word-cloud')[0]);
+
     $.ajax({
       type: "POST",
       url: "/wikipedia",
       data: data,
       success: function(response){
+        var size = _.size(response);
+        for(word in response){
+          response[word].handlers = {
+            click: function(){
+              requestCloudData({
+                "wikipedia": {
+                  "article_title": response[word]["text"],
+                  "word_count": size
+                }
+              });
+            }
+          }
+        }
+
         if(!cloudInitialized){
           $('.word-cloud').jQCloud(response,{
             autoResize: true
@@ -51,9 +68,6 @@ window.onload = function(){
     event.preventDefault();
 
     data = getFormData();
-
-    $('.article-form :input').prop("disabled", true);
-    spinner.spin($('.word-cloud')[0]);
 
     requestCloudData(data);
   });

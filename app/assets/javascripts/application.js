@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require jqcloud2/dist/jqcloud.min.js
 //= require spin.js/spin.min.js
+//= require underscore/underscore-min.js
 //= require_tree .
