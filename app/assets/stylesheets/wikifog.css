@@ -8,6 +8,19 @@
   z-index: 20;
 }
 
+.hidden{
+  visibility:hidden;
+}
+
+.notice-container{
+  background-color: #ff1a1a;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+  height: 22px;
+  text-align: center;
+}
+
 .word-cloud{
   height:500px;
 }

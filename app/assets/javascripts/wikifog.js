@@ -17,6 +17,16 @@ var Wikifog = {
     }
   },
 
+  clearPageAndDisplaySpinner: function(){
+    var notice = $('.notice');
+    notice.html("");
+
+    $('.article-form :input').prop("disabled", true);
+    $('.word-cloud').html('');
+    $('.notice-container').addClass('hidden');
+    this.spinner.spin($('.word-cloud')[0]);
+  },
+
   displayCloud: function(response){
     if(!Wikifog.cloudInitialized){
       $('.word-cloud').jQCloud(response,{
@@ -29,7 +39,8 @@ var Wikifog = {
   },
 
   displayError: function(){
-    $('.notices').html("<p>The requested article was not found.</p>")
+    $('.notice-container').removeClass('hidden');
+    $('.notice').html("<p>The requested article was not found.</p>");
   },
 
   enableForm: function(){
@@ -42,10 +53,7 @@ var Wikifog = {
   },
 
   requestCloudData: function(data){
-    $('.notices').html("")
-    $('.article-form :input').prop("disabled", true);
-    $('.word-cloud').html('');
-    this.spinner.spin($('.word-cloud')[0]);
+    this.clearPageAndDisplaySpinner();
 
     $.ajax({
       type: "POST",
