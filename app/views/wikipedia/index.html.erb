@@ -1,6 +1,7 @@
 <div class="container">
   <div class="row">
-    <h1>Create a Wikipedia word cloud</h1>
+    <h1>Create a Wikipedia Word Cloud!</h1>
+    <p>Type in an article title; a word cloud will be built from the text of that Wikipedia article and the articles it links to.</p>
   </div>
 
   <div class="row">
@@ -9,8 +10,8 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="two columns">
+  <div class="row cloud-body">
+    <div class="three columns form-overlay">
       <form class="article-form">
         <label>Article Title:
           <input type="text" name="wikipedia[article_title]"/>
@@ -22,7 +23,7 @@
       </form>
     </div>
 
-    <div class="eight columns">
+    <div class="twelve columns">
       <div class="word-cloud"></div>
     </div>
   </div>

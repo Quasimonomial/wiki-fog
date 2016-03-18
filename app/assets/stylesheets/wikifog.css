@@ -1,0 +1,14 @@
+.word-cloud{
+  height:500px;
+}
+
+
+.cloud-body{
+  position: relative;
+}
+
+.form-overlay{
+  position: absolute;
+  top: 0px;
+  z-index: 20;
+}
