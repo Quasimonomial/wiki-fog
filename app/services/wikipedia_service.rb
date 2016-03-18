@@ -48,9 +48,10 @@ class WikipediaService
 
   def get_link_text links
     text = ''
-    links.each_slice(50) do |links|
-      api_link = URI.escape("http://en.wikipedia.org/w/api.php?action=query&format=json&rvprop=content&inprop=url&prop=extracts&explaintext=&titles=#{links.join('|')}")
+    links.each_slice(20) do |links|
+      api_link = URI.escape("http://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exlimit=max&exintro&explaintext&titles=#{links.join('|')}")
       response = HTTParty.get(api_link)
+
       response["query"]["pages"].each do |id, article|
         begin
           article_text = article["extract"]
@@ -63,13 +64,13 @@ class WikipediaService
   end
 
   def fetch_links title
-    wikipedia_link_base = "https://en.wikipedia.org/w/api.php?action=query&prop=links&format=json&pllimit=max&titles=#{title}"
+    wikipedia_link_base = "https://en.wikipedia.org/w/api.php?action=query&prop=links&format=json&pllimit=max&titles="
 
     plcontinue = ''
     link_names = []
 
     loop do
-      wikipedia_page_link = "#{wikipedia_link_base}#{plcontinue}"
+      wikipedia_page_link = "#{wikipedia_link_base}#{title}#{plcontinue}"
       response = HTTParty.get(wikipedia_page_link)
       continue_value = response["continue"].try(:[], "plcontinue")
       plcontinue = continue_value ? "&plcontinue=#{continue_value}" : nil
