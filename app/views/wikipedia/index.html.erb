@@ -1,16 +1,29 @@
-<div class="notices"></div>
+<div class="container">
+  <div class="row">
+    <h1>Create a Wikipedia word cloud</h1>
+  </div>
 
-<h1>Create a wikipedia word cloud</h1>
+  <div class="row">
+    <div class="five columns">
+      <div class="notices"></div>
+    </div>
+  </div>
 
-<form class="article-form">
-  <label>Article Title:
-    <input type="text" name="wikipedia[article_title]"/>
-  </label>
-  <label>Number of Cloud Words: (Max 200)
-    <input type="text" name="wikipedia[word_count]"/>
-  </label>
-  <button id="submit-word">Submit Words</button>
-</form>
+  <div class="row">
+    <div class="two columns">
+      <form class="article-form">
+        <label>Article Title:
+          <input type="text" name="wikipedia[article_title]"/>
+        </label>
+        <label>Number of Cloud Words: (Max 200)
+          <input type="text" name="wikipedia[word_count]"/>
+        </label>
+        <button id="submit-word">Submit Words</button>
+      </form>
+    </div>
 
-
-<div class="word-cloud"></div>
+    <div class="eight columns">
+      <div class="word-cloud"></div>
+    </div>
+  </div>
+</div>
