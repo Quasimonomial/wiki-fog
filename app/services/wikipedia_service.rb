@@ -15,28 +15,18 @@ class WikipediaService
   end
 
   def get_page_data
-    return [] unless article_title
-    page = Wikipedia.find( article_title )
-
-    text = page.text
-    links = WikipediaService.fetch_links article_title
-
-    links.each_slice(50) do |links|
-      # puts "fetching #{links}"
-      api_link = URI.escape("http://en.wikipedia.org/w/api.php?action=query&format=json&rvprop=content&inprop=url&prop=extracts&explaintext=&titles=#{links.join('|')}")
-      response = HTTParty.get(api_link)
-      response["query"]["pages"].each do |id, article|
-        begin
-          article_text = article["extract"]
-          text += article_text
-        rescue
-          # puts "problem fetching article #{id}"
-        end
-      end
-
+    if article_title.blank?
+      page = Wikipedia.find_random_article
+    else
+      page = Wikipedia.find( article_title )
     end
 
-    format_word_frequency_array generate_word_frequency_hash text
+    text = page.text
+    links = fetch_links article_title
+
+    text += get_link_text links
+
+    generate_word_frequency_hash text
   end
 
   private
@@ -51,23 +41,28 @@ class WikipediaService
       frequency_hash[word.downcase] += 1
     end
 
-    frequency_hash.sort_by{|k, v| -v}.first(word_count)
-  end
-
-  def format_word_frequency_array frequency_array
-    frequency_array.map do |word|
-      {
-        "text" => word[0],
-        "weight" => word[1],
-      }
+    frequency_hash.sort_by{|k, v| -v}.first(word_count).map do |word|
+      { "text" => word[0], "weight" => word[1]}
     end
   end
 
-  def find_random_article
-    Wikipedia.find_random_article
+  def get_link_text links
+    text = ''
+    links.each_slice(50) do |links|
+      api_link = URI.escape("http://en.wikipedia.org/w/api.php?action=query&format=json&rvprop=content&inprop=url&prop=extracts&explaintext=&titles=#{links.join('|')}")
+      response = HTTParty.get(api_link)
+      response["query"]["pages"].each do |id, article|
+        begin
+          article_text = article["extract"]
+          text += article_text
+        rescue
+        end
+      end
+    end
+    text
   end
 
-  def self.fetch_links title
+  def fetch_links title
     wikipedia_link_base = "https://en.wikipedia.org/w/api.php?action=query&prop=links&format=json&pllimit=max&titles=#{title}"
 
     plcontinue = ''
