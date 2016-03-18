@@ -8,7 +8,7 @@ var Wikifog = {
         click: function(){
           Wikifog.requestCloudData({
             "wikipedia": {
-              "article_title": this.innerText,
+              "article_title": this.textContent,
               "word_count": size
             }
           });
