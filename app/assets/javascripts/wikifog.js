@@ -3,12 +3,12 @@ var Wikifog = {
 
   addEventHandlers: function(response){
     var size = _.size(response);
-    for(word in response){
+    for(var word in response){
       response[word].handlers = {
         click: function(){
           Wikifog.requestCloudData({
             "wikipedia": {
-              "article_title": response[word]["text"],
+              "article_title": this.innerText,
               "word_count": size
             }
           });
