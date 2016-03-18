@@ -15,11 +15,11 @@ class WikipediaService
   end
 
   def get_page_data
-    if article_title.blank?
-      page = Wikipedia.find_random_article
-    else
-      page = Wikipedia.find( article_title )
-    end
+    return false if article_title.blank?
+
+    page = Wikipedia.find( article_title )
+
+    return false unless page.text
 
     text = page.text
     links = fetch_links article_title

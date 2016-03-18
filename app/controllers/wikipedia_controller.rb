@@ -6,7 +6,11 @@ class WikipediaController < ApplicationController
   def create
     wiki_service = WikipediaService.new wikipedia_params
     frequency_data = wiki_service.get_page_data
-    render json: frequency_data.to_json
+    if frequency_data
+      render json: frequency_data.to_json
+    else
+      render nothing: true, status: 404;
+    end
   end
 
   private
