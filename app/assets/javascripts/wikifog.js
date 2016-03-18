@@ -29,8 +29,10 @@ var Wikifog = {
 
   displayCloud: function(response){
     if(!Wikifog.cloudInitialized){
-      $('.word-cloud').jQCloud(response,{
-        autoResize: true
+      $('.word-cloud').jQCloud(response, {
+        autoResize: true,
+        width: 700,
+        height: 400
       });
       Wikifog.cloudInitialized = true;
     } else {
