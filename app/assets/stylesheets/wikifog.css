@@ -6,10 +6,18 @@ body{
   position: relative;
 }
 
+.dropdown-menu-button{
+  cursor: pointer;
+}
+
 .form-overlay{
   position: absolute;
   top: 0px;
   z-index: 20;
+}
+
+.form-overlay button{
+  background-color: #ccc
 }
 
 .hidden{

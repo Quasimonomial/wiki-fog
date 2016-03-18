@@ -46,8 +46,8 @@ var Wikifog = {
   },
 
   enableForm: function(){
-    $('.article-form :input').prop("disabled", false)
-    Wikifog.spinner.stop()
+    $('.article-form :input').prop("disabled", false);
+    Wikifog.spinner.stop();
   },
 
   getFormData: function(){
@@ -74,6 +74,7 @@ var Wikifog = {
   requestSuccess: function(response){
     Wikifog.addEventHandlers(response);
     Wikifog.displayCloud(response);
+    $('.dropdown-menu-content').addClass('hidden')
   },
 
   spinner: new Spinner({
@@ -88,7 +89,11 @@ var Wikifog = {
     trail: 70,
     className: 'spinner',
     shadow: true
-  })
+  }),
+
+  toggleMenu: function(){
+    $('.dropdown-menu-content').toggleClass('hidden');
+  }
 }
 
 
