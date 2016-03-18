@@ -6,20 +6,19 @@ class WikipediaService
 
   WORD_BLACKLIST = MOST_COMMON_WIKIPEDIA_WORDS + ["has", "also", "which", "s", "was", "are", "is", "if", "no", "like", "where", "being", "who", "them", "had", "however", "often", "while", "only", "many", "during", "between", "these", "when", "most", "such", "than", "some", "more", "been", "may", "cats", "were", "its"]
 
-  attr_accessor :article_title, :word_count
+  attr_accessor :article_title, :random_page, :word_count
 
   def initialize options
     options["word_count"] = 50 if options["word_count"].blank?
     @article_title = options["article_title"]
+    @random_page = options[:random_page]
     @word_count = [options["word_count"].to_i, 200].min
   end
 
   def get_page_data
-    return false if article_title.blank?
+    page = get_page
 
-    page = Wikipedia.find( article_title )
-
-    return false unless page.text
+    return false unless page && page.text
 
     text = page.text
     links = fetch_links article_title
@@ -61,6 +60,17 @@ class WikipediaService
       end
     end
     text
+  end
+
+  def get_page
+    if random_page
+      random_page = Wikipedia.find_random
+      @article_title = random_page.title
+      random_page
+    else
+      return false if article_title.blank?
+      Wikipedia.find( article_title )
+    end
   end
 
   def fetch_links title

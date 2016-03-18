@@ -105,4 +105,12 @@ window.onload = function(){
 
     Wikifog.requestCloudData(data);
   });
+
+  $('.random_page').click(function(event){
+    event.preventDefault();
+
+    data = Wikifog.getFormData();
+
+    Wikifog.requestCloudData($.extend(data, {'wikipedia': {'random_page': true}}));
+  });
 }

@@ -16,6 +16,6 @@ class WikipediaController < ApplicationController
   private
 
   def wikipedia_params
-    params.require(:wikipedia).permit(:article_title, :word_count)
+    params.require(:wikipedia).permit(:article_title, :random_page, :word_count)
   end
 end
