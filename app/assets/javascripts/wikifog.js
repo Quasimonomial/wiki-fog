@@ -54,6 +54,24 @@ var Wikifog = {
     return $('.article-form').serialize();
   },
 
+  initListeners: function(){
+    $('.article-form').submit(function(event) {
+      event.preventDefault();
+
+      data = Wikifog.getFormData();
+
+      Wikifog.requestCloudData(data);
+    });
+
+    $('.random_page').click(function(event){
+      event.preventDefault();
+
+      data = Wikifog.getFormData();
+
+      Wikifog.requestCloudData($.extend(data, {'wikipedia': {'random_page': true}}));
+    });
+  },
+
   requestCloudData: function(data){
     this.clearPageAndDisplaySpinner();
 
@@ -94,23 +112,4 @@ var Wikifog = {
   toggleMenu: function(){
     $('.dropdown-menu-content').toggleClass('hidden');
   }
-}
-
-
-window.onload = function(){
-  $('.article-form').submit(function(event) {
-    event.preventDefault();
-
-    data = Wikifog.getFormData();
-
-    Wikifog.requestCloudData(data);
-  });
-
-  $('.random_page').click(function(event){
-    event.preventDefault();
-
-    data = Wikifog.getFormData();
-
-    Wikifog.requestCloudData($.extend(data, {'wikipedia': {'random_page': true}}));
-  });
 }
