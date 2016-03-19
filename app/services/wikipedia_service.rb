@@ -8,10 +8,10 @@ class WikipediaService
 
   attr_accessor :article_title, :random_page, :word_count
 
-  def initialize options
+  def initialize options = {}
     options["word_count"] = 50 if options["word_count"].blank?
     @article_title = options["article_title"]
-    @random_page = options[:random_page]
+    @random_page = options["random_page"]
     @word_count = [options["word_count"].to_i, 200].min
   end
 
@@ -21,9 +21,8 @@ class WikipediaService
     return false unless page && page.text
 
     text = page.text
-    links = fetch_links article_title
 
-    text += get_link_text links
+    text += get_link_text fetch_links
 
     generate_word_frequency_hash text
   end
@@ -64,7 +63,7 @@ class WikipediaService
 
   def get_page
     if random_page
-      random_page = Wikipedia.find_random
+      random_page = Wikipedia::Client.new.find_random
       @article_title = random_page.title
       random_page
     else
@@ -73,14 +72,14 @@ class WikipediaService
     end
   end
 
-  def fetch_links title
+  def fetch_links
     wikipedia_link_base = "https://en.wikipedia.org/w/api.php?action=query&prop=links&format=json&pllimit=max&titles="
 
     plcontinue = ''
     link_names = []
 
     loop do
-      wikipedia_page_link = "#{wikipedia_link_base}#{title}#{plcontinue}"
+      wikipedia_page_link = "#{wikipedia_link_base}#{article_title}#{plcontinue}"
       response = HTTParty.get(wikipedia_page_link)
       continue_value = response["continue"].try(:[], "plcontinue")
       plcontinue = continue_value ? "&plcontinue=#{continue_value}" : nil
