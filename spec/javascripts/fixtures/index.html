@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="five columns notice-container hidden">
+    <div class="notice"></div>
+  </div>
+</div>
+
+<div class="row cloud-body">
+  <div class="three columns form-overlay dropdown-menu">
+    <button onclick="Wikifog.toggleMenu()" class="dropdown-menu-button">Show Menu</button>
+    <div class="dropdown-menu-content">
+      <form class="article-form">
+        <label>Article Title:
+          <input type="text" name="wikipedia[article_title]"/>
+        </label>
+        <label>Number of Cloud Words: (Max 200)
+          <input type="text" name="wikipedia[word_count]"/>
+        </label>
+        <button class="submit-word">Submit Words</button>
+      </form>
+      <button class="random_page">Random Article!</button>
+    </div>
+  </div>
+
+  <div class="word-cloud"></div>
+</div>
