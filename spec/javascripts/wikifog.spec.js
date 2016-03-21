@@ -41,17 +41,17 @@ describe("Wikifog", function() {
     });
 
     it("A spinner appears when an ajax request begins, and disappears after", function(){
-      expect($('.spinner').length).toEqual(0)
+      expect($('.spinner').length).toEqual(0);
 
       Wikifog.requestCloudData();
 
-      expect($('.spinner').length).toEqual(1)
+      expect($('.spinner').length).toEqual(1);
 
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status": 200
       });
 
-      expect($('.spinner').length).toEqual(0)
+      expect($('.spinner').length).toEqual(0);
     });
 
     it("Form is disabled while request is being made", function(){
