@@ -16,4 +16,5 @@
 //= require jqcloud2/dist/jqcloud.min.js
 //= require spin.js/spin.min.js
 //= require underscore/underscore-min.js
+//= require jasmine-ajax/lib/mock-ajax.js
 //= require_tree .
