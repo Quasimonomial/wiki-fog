@@ -20,7 +20,7 @@ This project uses the follow libraries:
 * the [HTTParty gem](https://github.com/jnunemaker/httparty) - this one allows us to party hard and also do HTTP requests
 
 ### Front End
-* [Seleton](http://getskeleton.com/) for styling
+* [Skeleton](http://getskeleton.com/) for styling
 * [JQCloud](http://mistic100.github.io/jQCloud/) for generating the word cloud
 * [spin.js](http://fgnass.github.io/spin.js/) for showing a spinner
 
