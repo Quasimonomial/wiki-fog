@@ -83,13 +83,36 @@ describe("Wikifog", function() {
     });
   });
 
-  describe("Word Cloud", function(){
-    it("displays a word cloud on success", function(){
-
+  describe("Menu", function(){
+    beforeEach(function() {
+      jasmine.Ajax.install();
+      Wikifog.initListeners();
+    });
+    afterEach(function() {
+      jasmine.Ajax.uninstall();
     });
 
-    it("creates a random word cloud", function(){
+    it("sends a request", function(){
+      var requestSpy = spyOn(Wikifog, "requestCloudData");
 
+      $('.title').val("cat")
+
+      $('.submit-word').click()
+
+
+      expect(requestSpy).toHaveBeenCalledWith('wikipedia%5Barticle_title%5D=cat&wikipedia%5Bword_count%5D=');
+    });
+
+    it("sends a request for a random page", function(){
+      var requestSpy = spyOn(Wikifog, "requestCloudData");
+
+      $('.random_page').click()
+
+      expect(requestSpy).toHaveBeenCalledWith({
+        wikipedia: {
+          random_page: true
+        }
+      });
     });
   });
 });
